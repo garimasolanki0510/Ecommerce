@@ -1,0 +1,268 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #3498db;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+        .item-details {
+            flex-grow: 1;
+        }
+        .item-details h3 {
+            margin: 0 0 5px 0;
+            font-size: 18px;
+        }
+        .item-details p {
+            margin: 0;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+        .quantity-controls button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+        .quantity-controls span {
+            font-size: 16px;
+            margin: 0 10px;
+        }
+        .total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        .checkout-form {
+            margin-top: 30px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .checkout-form h2 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        .checkout-form input, .checkout-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .checkout-form button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        .checkout-form button:hover {
+            background-color: #2980b9;
+        }
+        .empty-cart {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            margin-top: 50px;
+        }
+        #qr-code {
+            text-align: center;
+            margin-top: 20px;
+            margin: auto;
+        }
+        #qr-code img {
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Shopping Cart</h1>
+        <div id="cart-items">
+            <!-- Cart items will be dynamically inserted here -->
+        </div>
+        <div class="total">Total: $<span id="cart-total">0.00</span></div>
+        <form class="checkout-form" id="checkout-form">
+            <h2>Checkout</h2>
+            <input type="text" id="street" placeholder="Street Address" required>
+            <input type="text" id="city" placeholder="City" required>
+            <input type="text" id="state" placeholder="State" required>
+            <input type="text" id="country" placeholder="Country" required>
+            <input type="text" id="pincode" placeholder="Pincode" required>
+            <button type="button" onclick="getCurrentLocation()">Use Current Location</button>
+            <input type="text" id="upi-id" placeholder="UPI ID" required>
+            <button type="submit">Pay with UPI</button>
+        </form>
+        <div id="qr-code"></div>
+    </div>
+    <!-- {% include 'footer.html'%} -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+        function renderCartItems() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+
+            if (cartItems.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
+                return;
+            }
+
+            cartItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item');
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="item-details">
+                        <h3>${item.title}</h3>
+                        <p>$${item.price.toFixed(2)}</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity(${item.id}, -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="changeQuantity(${item.id}, 1)">+</button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+
+            updateTotal();
+        }
+
+        function changeQuantity(id, change) {
+            const item = cartItems.find(item => item.id === id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity < 1) {
+                    cartItems = cartItems.filter(item => item.id !== id);
+                }
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                renderCartItems();
+            }
+        }
+
+        function updateTotal() {
+            const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            document.getElementById('cart-total').textContent = total.toFixed(2);
+        }
+
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            
+            // Here you would typically use a reverse geocoding service to get the address
+            // For this example, we'll just show the coordinates
+            document.getElementById('street').value = `Lat: ${latitude}, Long: ${longitude}`;
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+        function handleCheckout(event) {
+            event.preventDefault();
+            const address = {
+                street: document.getElementById('street').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                country: document.getElementById('country').value,
+                pincode: document.getElementById('pincode').value
+            };
+            const upiId = document.getElementById('upi-id').value;
+            const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            // Generate QR code for payment
+            const qrCodeContainer = document.getElementById('qr-code');
+            qrCodeContainer.innerHTML = '';
+            new QRCode(qrCodeContainer, {
+                text: `upi://pay?pa=${upiId}&am=${total.toFixed(2)}&cu=INR`,
+                width: 200,
+                height: 200
+            });
+
+            // Here you would typically send this data to your server
+            console.log('Checkout:', { address, upiId, cartItems, total });
+
+            // Clear cart after successful checkout
+            localStorage.removeItem('cartItems');
+            cartItems = [];
+            renderCartItems();
+            alert('Thank you for your purchase! Please scan the QR code to complete the payment.');
+        }
+
+        renderCartItems();
+        document.getElementById('checkout-form').addEventListener('submit', handleCheckout);
+    </script>
+</body>
+</html>

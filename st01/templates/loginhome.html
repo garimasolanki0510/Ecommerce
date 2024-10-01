@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #ecf0f1;
+            --text-color: #333;
+            --card-background: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .user-info {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ user.firstname }}!</h1>
+        <div class="user-info">
+            <div class="info-item">
+                <span class="info-label">First Name:</span>
+                <span>{{ user.firstname }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Last Name:</span>
+                <span>{{ user.lastname }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Email:</span>
+                <span>{{ user.email }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Mobile:</span>
+                <span>{{ user.mobile }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Username:</span>
+                <span>{{ user.username }}</span>
+            </div>
+        </div>
+        <div class="button-group">
+           <a href="{%  url 'home' %}"> <button class="btn">Logout</button></a>
+            <button class="btn">View Cart</button>
+            <button class="btn" >Edit Profile</button>
+        </div>
+    </div>
+</body>
+</html>

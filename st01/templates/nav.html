@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Retailers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- <link rel="stylesheet" href="{% static 'css/nav.css'%}"> -->
+     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+}
+
+nav {
+    background-color: #2c3e50;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 5%;
+    transition: all 0.3s ease;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ecf0f1;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #3498db;
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+}
+
+.search-container {
+    position: relative;
+    margin-right: 15px;
+}
+
+.search-icon, .cart-icon, .hamburger {
+    color: #ecf0f1;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.search-input {
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.search-input.active {
+    width: 200px;
+    opacity: 1;
+    right: 120%;
+}
+
+.hamburger {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .nav-links {
+        position: fixed;
+        left: -100%;
+        top: 60px;
+        flex-direction: column;
+        background-color: #2c3e50;
+        width: 100%;
+        height: calc(100vh - 70px);
+        text-align: center;
+        transition: all 0.5s ease;
+    }
+
+    .nav-links.active {
+        left: 0;
+    }
+
+    .nav-links li {
+        margin: 15px 0;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .logo {
+        font-size: 1rem;
+     
+    }
+
+    .search-input.active {
+        width: 150px;
+    }
+}
+
+.container {
+    padding-top: 80px;
+    /* Add your main content styles here */
+}
+     </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">E-Commerce Retailers</div>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Sign up</a></li>
+            </ul>
+            <div class="nav-icons">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="search" class="search-input" placeholder="Search for items">
+                </div>
+                <a href="{% url 'cart' %}" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const hamburger = document.querySelector(".hamburger");
+            const navLinks = document.querySelector(".nav-links");
+            const searchIcon = document.querySelector(".search-icon");
+            const searchInput = document.querySelector(".search-input");
+
+            hamburger.addEventListener("click", function () {
+                navLinks.classList.toggle("active");
+            });
+
+            searchIcon.addEventListener("click", function () {
+                searchInput.classList.toggle("active");
+                if (searchInput.classList.contains("active")) {
+                    searchInput.focus();
+                }
+            });
+
+            // Close search input when clicking outside
+            document.addEventListener("click", function (event) {
+                if (!event.target.closest('.search-container')) {
+                    searchInput.classList.remove("active");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

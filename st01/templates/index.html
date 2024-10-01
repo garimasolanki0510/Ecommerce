@@ -1,0 +1,134 @@
+{% include 'nav.html' %}<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Commerce Retailers</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .product {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .product:hover {
+        transform: translateY(-5px);
+      }
+
+      .product img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .content {
+        padding: 15px;
+      }
+
+      .content p {
+        margin-bottom: 10px;
+      }
+
+      a {
+        color: #33383b;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    {% include 'nav.html' %}
+    <main>
+      <div class="container"></div>
+    </main>
+    <script>
+      const container = document.querySelector(".container");
+      const categoryUrls = [
+        "https://dummyjson.com/products/category/beauty",
+        "https://dummyjson.com/products/category/fragrances",
+        "https://dummyjson.com/products/category/furniture",
+        "https://dummyjson.com/products/category/groceries",
+        "https://dummyjson.com/products/category/home-decoration",
+        "https://dummyjson.com/products/category/kitchen-accessories",
+        "https://dummyjson.com/products/category/laptops",
+        "https://dummyjson.com/products/category/mens-shirts",
+        "https://dummyjson.com/products/category/motorcycle",
+        "https://dummyjson.com/products/category/skincare",
+        "https://dummyjson.com/products/category/tops",
+        "https://dummyjson.com/products/category/womens-bags",
+        "https://dummyjson.com/products/category/tablets",
+        "https://dummyjson.com/products/category/vehicle",
+        "https://dummyjson.com/products/category/mobile-accessories",
+        "https://dummyjson.com/products/category/skin-care",
+      ];
+
+      function fetchProducts(url) {
+        return fetch(url)
+          .then((res) => res.json())
+          .then((data) => data.products)
+          .catch((error) => {
+            console.error("Error fetching products:", error);
+            return [];
+          });
+      }
+
+      function displayProduct(item) {
+        const product = document.createElement("div");
+        product.classList.add("product");
+        product.innerHTML = `
+                <a href="/products/${item.id}/">
+                    <img src="${item.thumbnail}" alt="${item.title}">
+                    <div class="content">
+                        <p><b>Title:</b> ${item.title}</p>
+                        <p><b>Price:</b> ₹${parseInt(item.price) * 82}</p>
+                        <p><b>Description:</b> ${item.description.slice(
+                          0,
+                          50
+                        )}...</p>
+                    </div>
+                </a>
+            `;
+        container.appendChild(product);
+      }
+
+      Promise.all(categoryUrls.map(fetchProducts))
+        .then((results) => {
+          const allProducts = results.flat();
+          allProducts.forEach(displayProduct);
+        })
+        .catch((error) => console.error("Error fetching all products:", error));
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const hamburger = document.querySelector(".hamburger");
+        const navLinks = document.querySelector(".nav-links");
+        if (hamburger && navLinks) {
+          hamburger.addEventListener("click", function () {
+            hamburger.classList.toggle("active");
+            navLinks.classList.toggle("active");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

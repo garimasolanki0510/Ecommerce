@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - E-Commerce Retailers</title>
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'nav.html' %}
+    <main class="about-page">
+        <section class="hero">
+            <h1>Our Story</h1>
+            <p>Revolutionizing online shopping since 2010</p>
+        </section>
+        <section class="mission">
+            <div class="mission-content">
+                <h2>Our Mission</h2>
+                <p>At E-Commerce Retailers, we're on a mission to redefine your online shopping experience. We believe in providing top-quality products, exceptional customer service, and a seamless interface that makes finding your perfect item a breeze.</p>
+            </div>
+        </section>
+
+        <section class="values">
+            <h2>Our Core Values</h2>
+            <div class="value-grid">
+                <div class="value-item">
+                    <h3>Quality</h3>
+                    <p>We never compromise on the quality of our products.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Innovation</h3>
+                    <p>Constantly evolving to meet the needs of our customers.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Sustainability</h3>
+                    <p>Committed to eco-friendly practices and products.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Community</h3>
+                    <p>Building strong relationships with our customers and partners.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="join-us">
+            <h2>Join Our Journey</h2>
+            <p>Be part of the E-Commerce Retailers family. Shop with us and experience the future of online retail.</p>
+            <a href="" class="cta-button">Shop Now</a>
+        </section>
+    </main>
+
+</body>
+</html>

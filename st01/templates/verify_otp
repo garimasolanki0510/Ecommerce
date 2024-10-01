@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <form action="{% url 'verify_otp' %}" method="post" id="otpForm" class="form">
+            {% csrf_token %}
+            <h2>Verify OTP</h2>
+            <div class="form-content">
+                <div class="form-row">
+                    <div class="flex-column">
+                        <label for="otp">Enter OTP</label>
+                        <input name="otp" id="otp" placeholder="Enter the OTP sent to your email" type="text" required>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <span class="error-message">{{ message }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="button-submit">Verify OTP</button>
+        </form>
+    </main>
+</body>
+</html>

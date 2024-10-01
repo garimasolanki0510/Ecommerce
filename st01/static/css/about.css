@@ -1,0 +1,155 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+    background-color: #f0f4f8;
+    line-height: 1.6;
+}
+
+.about-page {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 2rem;
+}
+
+.hero {
+    text-align: center;
+    padding: 6rem 0;
+    background: linear-gradient(135deg, #3498db, #2ecc71);
+    color: white;
+    border-radius: 20px;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 40%);
+    transform: rotate(30deg);
+    animation: shineEffect 8s linear infinite;
+}
+
+@keyframes shineEffect {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.mission, .values, .join-us {
+    background-color: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-bottom: 3rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission:hover, .values:hover, .join-us:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.mission h2, .values h2, .join-us h2 {
+    color: #3498db;
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    position: relative;
+    display: inline-block;
+}
+
+.mission h2::after, .values h2::after, .join-us h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 50%;
+    height: 3px;
+    background-color: #2ecc71;
+    transition: width 0.3s ease;
+}
+
+.mission:hover h2::after, .values:hover h2::after, .join-us:hover h2::after {
+    width: 100%;
+}
+
+.value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+}
+
+.value-item {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.value-item h3 {
+    color: #2ecc71;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.value-item p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.cta-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(41, 128, 185, 0.4);
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 3rem;
+    }
+    
+    .mission, .values, .join-us {
+        padding: 2rem;
+    }
+    
+    .value-grid {
+        grid-template-columns: 1fr;
+    }
+}
